@@ -33,3 +33,7 @@ body {
   height: 200px;
   width: 25%;
 }
+
+#resultTable {
+  border-collapse: collapse;
+}

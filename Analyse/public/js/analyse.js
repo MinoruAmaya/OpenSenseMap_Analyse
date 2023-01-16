@@ -5,14 +5,9 @@ L.tileLayer(
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-//var SBID;
-
-function returnText() {
-    let SBID = document.getElementById("userInput").value;
-    alert(SBID)
-}
 
 let lautstärken = []
+let dbwithtime = []
 
 function fetchbox() {
     let SBID = document.getElementById("userInput").value;
@@ -81,30 +76,97 @@ function fetchbox() {
     // test box: 60f077874fb91e001c71b3b1
     // test sensor: 60f077874fb91e001c71b3b2
     let SID = document.getElementById("sid").value;
+    let starttime = document.getElementById("starttimeInput").value;
+    let endtime = document.getElementById("endtimeInput").value;
     console.log(SBID)
     console.log(SID)
-    fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SID}`).then(function (response) {
-        return response.json();
-    }).then(function (dbdata) {
-        console.log(dbdata);
-        // Filter die letzten x Einträge heraus
-        for (let i = 0; i < 30; i++) {
+    if (starttime == 0) {
+        fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SID}`).then(function (response) {
+            return response.json();
+        }).then(function (dbdata) {
+            console.log(dbdata);
+            // Filter die letzten x Einträge heraus
+            for (let i = 0; i < 100; i++) {
 
-            lautstärken.push(dbdata[i].createdAt + ": " + dbdata[i].value)
-        }
-        console.log(lautstärken)
+                lautstärken.push(dbdata[i].createdAt + ": " + dbdata[i].value)
+            }
+            console.log(lautstärken)
 
-        document.getElementById("elements").innerHTML = JSON.stringify(lautstärken);
+            //document.getElementById("elements").innerHTML = JSON.stringify(lautstärken);
 
-        // export as json
-        var boxinfos = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbdata));
-        var a = document.createElement('a');
-        a.href = boxinfos;
-        a.download = 'boxinfos.json';
-        a.innerHTML = "Herunterladen als JSON"
+            drawTable(dbdata)
+            /**
+             * @function drawTable
+             * @desc inserts the fetched data into the table thats displayed on the page
+             * @param {*} results array of JSON wich containes the data to be displayed
+             */
+            function drawTable(results) {
+                var table = document.getElementById("resultTable");
+                //creates the Table with the direction an distances
+                for (var j = 0; j < results.length; j++) {
+                    var newRow = table.insertRow(j + 1);
+                    var cel1 = newRow.insertCell(0);
+                    var cel2 = newRow.insertCell(1);
+                    cel1.innerHTML = dbdata[j].createdAt;
+                    cel2.innerHTML = dbdata[j].value;
+                }
+            }
 
-        var containerjson = document.getElementById('containerjson');
-        containerjson.appendChild(a);
+            // export as json
+            var boxinfos = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbdata));
+            var a = document.createElement('a');
+            a.href = boxinfos;
+            a.download = 'boxinfos.json';
+            a.innerHTML = "Herunterladen als JSON"
 
-    });
+            var containerjson = document.getElementById('containerjson');
+            containerjson.appendChild(a);
+
+        });
+    } else {
+        //function fetchboxtime() {
+        // Beispielzeiten: 2022-11-22T08:00 und 2022-11-22T12:00
+
+        fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SID}?from-date=${starttime}:00Z&to-date=${endtime}:00Z&format=json`).then(function (response) {
+            return response.json();
+        }).then(function (timedata) {
+            console.log(timedata);
+            // Filter die letzten x Einträge heraus
+            for (let i = 0; i < 100; i++) {
+
+                dbwithtime.push(timedata[i].createdAt + ": " + timedata[i].value)
+            }
+            console.log(timedata)
+
+            //document.getElementById("elements").innerHTML = JSON.stringify(dbwithtime);
+            drawTable(timedata)
+            /**
+             * @function drawTable
+             * @desc inserts the fetched data into the table thats displayed on the page
+             * @param {*} results array of JSON wich containes the data to be displayed
+             */
+            function drawTable(results) {
+                var table = document.getElementById("resultTable");
+                //creates the Table with the direction an distances
+                for (var j = 0; j < results.length; j++) {
+                    var newRow = table.insertRow(j + 1);
+                    var cel1 = newRow.insertCell(0);
+                    var cel2 = newRow.insertCell(1);
+                    cel1.innerHTML = timedata[j].createdAt;
+                    cel2.innerHTML = timedata[j].value;
+                }
+            }
+
+            // export as json
+            var boxinfos = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(timedata));
+            var a = document.createElement('a');
+            a.href = boxinfos;
+            a.download = 'boxinfos.json';
+            a.innerHTML = "Herunterladen als JSON"
+
+            var containerjson = document.getElementById('containerjson');
+            containerjson.appendChild(a);
+        });
+        //}
+    }
 }

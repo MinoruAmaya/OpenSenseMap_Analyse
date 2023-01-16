@@ -207,8 +207,21 @@ window.onload = function() {
         console.log(JSON.stringify(data));
         // show JSON as Text on Website
 
-        document.getElementById("elements").innerHTML = JSON.stringify(data);
+        //document.getElementById("elements").innerHTML = JSON.stringify(data);
+    
+    let lautstärken = []
+    fetch("https://api.opensensemap.org/boxes/60f077874fb91e001c71b3b1/data/60f077874fb91e001c71b3b2").then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        console.log(data);
+        // Filter die letzten 100 Einträge heraus
+        for(let i = 0; i < 30; i++) {
+            lautstärken.push(data[i].createdAt + ": " + data[i].value)
+        }
+        console.log(lautstärken)
 
+        document.getElementById("elements").innerHTML = JSON.stringify(lautstärken);
+    })
 
         // spezielles Design für die Marker der Messungen
         var boxstandort = L.icon({
@@ -222,15 +235,10 @@ window.onload = function() {
             pointToLayer: function(feature, latlng) {
                 return L.marker(latlng, { icon: boxstandort });
             },
+            
             onEachFeature: function(feature, layer) {
-                if (feature.properties) {
-                    layer.bindPopup(Object.keys(feature.properties).map(function(k) {
-                        return k + ": " + feature.properties[k];
-                    }).join("<br />"), {
-                        maxHeight: 200
-                    });
-                }
-            }
+                    layer.bindPopup(JSON.stringify(lautstärken.toString))
+            } 
         }).addTo(map);
 
         var baseLayer = { map };
@@ -239,11 +247,11 @@ window.onload = function() {
         var layerControl = L.control.layers(null, overlays).addTo(map);
         //layerControl.addOverlay(boxvisualisierung, 'Boxstandort');
 
-        // export as .geojson
+        // export as json
         var boxinfos = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
         var a = document.createElement('a');
         a.href = boxinfos;
-        a.download = 'boxinfos.geojson';
+        a.download = 'boxinfos.json';
         a.innerHTML = "Herunterladen als (Geo)JSON"
 
         var container = document.getElementById('container');

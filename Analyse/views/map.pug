@@ -7,11 +7,12 @@ block content
     .row.justify-content-md-left
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysemap
-                h5 Karte
-                p Karte zur Visualisierung der Messtationen und (in Arbeit) mit Abruf der gemessenen Werte als popup der Marker
-                p (mit der Möglichkeit eine Heatmap der gemessenen Werte ein und aus zu blenden)
+                h3 Karte
+                p Karte zur Visualisierung der vom Nutzer verlangten Messtation
+                h5 Eingabe der SenseBox ID zur Abfrage und Visualisierung:
                 input#userInput(type='text' placeholder='Sensebox ID')
-                button(onclick='fetchbox()') Submit
+                button.btn-dark(onclick='fetchbox()') Submit
+                br
                 #analysemap
 
             .card.text-dark.p-4.border-success.cardplotting
@@ -25,9 +26,10 @@ block content
 
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysen
+                h5 Eingabe der SenseBoxID und SensorID zur Abfrage der gemessenen Werte
                 input#sbid(type='text' placeholder='Sensebox ID')
                 input#sid(type='text' placeholder='Sensor ID')
-                button(onclick='fetchsensordata()') Submit
+                button.btn-dark(onclick='fetchsensordata()') Submit
                 .card.text-dark.p-4.border-success.card
                   h4 Anzeige aller gemessenen Werte eines Messstandorts (eventuell Möglichkeit diesen hier noch zu ändern, auch wenn vorher andere ID angegeben wurde)
                     br

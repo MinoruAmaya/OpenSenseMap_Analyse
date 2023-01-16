@@ -1,4 +1,4 @@
-var map = L.map('analysemap').setView([51.9, 7.5], 12);
+var map = L.map('analysemap').setView([51.919, 7.5], 12);
 
 L.tileLayer(
     'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -72,9 +72,10 @@ function fetchbox() {
     }).catch(function (err) {
         console.log('Fetch Error :', err);
     })
-
-    // test box: 60f077874fb91e001c71b3b1
-    // test sensor: 60f077874fb91e001c71b3b2
+    
+    // test box: Senden: 60f077874fb91e001c71b3b1 TestBox: 63c3f0c9a122c30008268cc0
+    // test sensor: Senden: 60f077874fb91e001c71b3b2 TestBox: 63c3f0c9a122c30008268cc1
+    // Beispielzeiten: 2022-11-22T08:00 und 2022-11-22T12:00
     let SID = document.getElementById("sid").value;
     let starttime = document.getElementById("starttimeInput").value;
     let endtime = document.getElementById("endtimeInput").value;
@@ -125,8 +126,6 @@ function fetchbox() {
         });
     } else {
         //function fetchboxtime() {
-        // Beispielzeiten: 2022-11-22T08:00 und 2022-11-22T12:00
-
         fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SID}?from-date=${starttime}:00Z&to-date=${endtime}:00Z&format=json`).then(function (response) {
             return response.json();
         }).then(function (timedata) {

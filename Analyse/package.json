@@ -13,11 +13,13 @@
     "fs": "^0.0.1-security",
     "heatmap.js": "^2.0.5",
     "http-errors": "~1.6.3",
+    "jsdom": "^21.0.0",
     "leaflet": "^1.9.2",
     "leaflet-heatmap": "^1.0.0",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.20",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "request": "^2.88.2"
   },
   "description": "This is the repository for the Citizen Science Project \"Umweltbezogener Gesundheitsschutz und Citizen Science\"",
   "main": "app.js",

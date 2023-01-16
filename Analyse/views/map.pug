@@ -3,15 +3,19 @@ extends layout
 block content
     h2 Analyse Seite
     br
-    p Hier können Sie die gemessenen Werte Analysieren
+    p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und Statistisch Analysieren
+    h5 Eingabe der SenseBox ID zur Abfrage und Visualisierung:
+    input#userInput(style="width: 30%", type='text' placeholder='Sensebox ID')
+    h5 Eingabe der SenseBoxID und SensorID zur Abfrage der gemessenen Werte
+    input#sid(style="width: 30%", type='text' placeholder='Sensor ID')
+    p
+    button.btn-dark(style="width: 30%", onclick='fetchbox()') Submit
+    p 
     .row.justify-content-md-left
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysemap
                 h3 Karte
                 p Karte zur Visualisierung der vom Nutzer verlangten Messtation
-                h5 Eingabe der SenseBox ID zur Abfrage und Visualisierung:
-                input#userInput(type='text' placeholder='Sensebox ID')
-                button.btn-dark(onclick='fetchbox()') Submit
                 br
                 #analysemap
 
@@ -26,12 +30,8 @@ block content
 
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysen
-                h5 Eingabe der SenseBoxID und SensorID zur Abfrage der gemessenen Werte
-                input#sbid(type='text' placeholder='Sensebox ID')
-                input#sid(type='text' placeholder='Sensor ID')
-                button.btn-dark(onclick='fetchsensordata()') Submit
                 .card.text-dark.p-4.border-success.card
-                  h4 Anzeige aller gemessenen Werte eines Messstandorts (eventuell Möglichkeit diesen hier noch zu ändern, auch wenn vorher andere ID angegeben wurde)
+                  h4 Anzeige aller gemessenen Werte eines nachgefragten Messstandorts mit Datum und Uhrzeit
                     br
                     #elements
                     br

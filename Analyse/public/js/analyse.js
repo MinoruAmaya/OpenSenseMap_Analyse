@@ -1,4 +1,4 @@
-var map = L.map('analysemap').setView([51.9, 7.6], 12);
+var map = L.map('analysemap').setView([51.9, 7.5], 12);
 
 L.tileLayer(
     'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -12,15 +12,15 @@ function returnText() {
     alert(SBID)
 }
 
-
+let lautstärken = []
 
 function fetchbox() {
     let SBID = document.getElementById("userInput").value;
     console.log(SBID)
-    fetch(`https://api.opensensemap.org/boxes/${SBID}?format=geojson`).then(function(response) {
+    fetch(`https://api.opensensemap.org/boxes/${SBID}?format=geojson`).then(function (response) {
         return response.json();
         console.log(SBID)
-    }).then(function(data) {
+    }).then(function (data) {
         console.log(data);
         console.log(JSON.stringify(data));
 
@@ -33,20 +33,25 @@ function fetchbox() {
         });
 
         var boxvisualisierung = new L.geoJSON(data, {
-            pointToLayer: function(feature, latlng) {
-                return L.marker(latlng, { icon: boxstandort });
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {
+                    icon: boxstandort
+                });
             },
 
-            onEachFeature: function(feature, layer) {
+            onEachFeature: function (feature, layer) {
                 layer.bindPopup(feature.properties.name)
 
             }
         }).addTo(map);
 
-        var baseLayer = { map };
-        var overlays = { boxvisualisierung };
+        var baseLayer = {
+            map
+        };
+        var overlays = {
+            boxvisualisierung
+        };
 
-        var layerControl = L.control.layers(null, overlays).addTo(map);
         //layerControl.addOverlay(boxvisualisierung, 'Boxstandort');// spezielles Design für die Marker der Messungen
         var boxstandort = L.icon({
             iconUrl: 'images/boxmarker.png',
@@ -56,46 +61,35 @@ function fetchbox() {
         });
 
         var boxvisualisierung = new L.geoJSON(data, {
-            pointToLayer: function(feature, latlng) {
-                return L.marker(latlng, { icon: boxstandort });
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {
+                    icon: boxstandort
+                });
             },
 
-            onEachFeature: function(feature, layer) {
+            onEachFeature: function (feature, layer) {
                 layer.bindPopup(feature.properties.name)
 
             }
         }).addTo(map);
 
-        var baseLayer = { map };
-        var overlays = { boxvisualisierung };
 
-        var layerControl = L.control.layers(null, overlays).addTo(map);
-        //layerControl.addOverlay(boxvisualisierung, 'Boxstandort');
-
-        //document.getElementById("elements").innerHTML = JSON.stringify(data);
-
-
-    }).catch(function(err) {
+    }).catch(function (err) {
         console.log('Fetch Error :', err);
     })
-}
 
-
-let lautstärken = []
-
-function fetchsensordata() {
     // test box: 60f077874fb91e001c71b3b1
     // test sensor: 60f077874fb91e001c71b3b2
-    let SBIDS = document.getElementById("sbid").value;
     let SID = document.getElementById("sid").value;
-    console.log(SBIDS)
+    console.log(SBID)
     console.log(SID)
-    fetch(`https://api.opensensemap.org/boxes/${SBIDS}/data/${SID}`).then(function(response) {
+    fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SID}`).then(function (response) {
         return response.json();
-    }).then(function(dbdata) {
+    }).then(function (dbdata) {
         console.log(dbdata);
-        // Filter die letzten 100 Einträge heraus
+        // Filter die letzten x Einträge heraus
         for (let i = 0; i < 30; i++) {
+
             lautstärken.push(dbdata[i].createdAt + ": " + dbdata[i].value)
         }
         console.log(lautstärken)

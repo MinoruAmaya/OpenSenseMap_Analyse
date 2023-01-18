@@ -72,7 +72,7 @@ function fetchbox() {
     }).catch(function (err) {
         console.log('Fetch Error :', err);
     })
-    
+
     // test box: Senden: 60f077874fb91e001c71b3b1 TestBox: 63c3f0c9a122c30008268cc0
     // test sensor: Senden: 60f077874fb91e001c71b3b2 TestBox: 63c3f0c9a122c30008268cc1
     // Beispielzeiten: 2022-11-22T08:00 und 2022-11-22T12:00
@@ -87,7 +87,7 @@ function fetchbox() {
         }).then(function (dbdata) {
             console.log(dbdata);
             // Filter die letzten x Einträge heraus
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < dbdata.length; i++) {
 
                 lautstärken.push(dbdata[i].createdAt + ": " + dbdata[i].value)
             }
@@ -131,7 +131,7 @@ function fetchbox() {
         }).then(function (timedata) {
             console.log(timedata);
             // Filter die letzten x Einträge heraus
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < timedata.length; i++) {
 
                 dbwithtime.push(timedata[i].createdAt + ": " + timedata[i].value)
             }
@@ -155,7 +155,21 @@ function fetchbox() {
                     cel2.innerHTML = timedata[j].value;
                 }
             }
-
+            /**
+             * clearTable
+             * @desc removes all table entries and rows except for the header.
+             * @param tableID the id of the table to clear
+             */
+            function clearTable(tableID) {
+                //remove all table rows
+                var tableHeaderRowCount = 1;
+                var table = document.getElementById(tableID);
+                var rowCount = table.rows.length;
+                for (var i = tableHeaderRowCount; i < rowCount; i++) {
+                    table.deleteRow(tableHeaderRowCount);
+                }
+            }
+            
             // export as json
             var boxinfos = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(timedata));
             var a = document.createElement('a');

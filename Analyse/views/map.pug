@@ -4,7 +4,7 @@ block content
     h2 Analyse Seite
     br
     p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und Statistisch Analysieren
-    h5 1. Eingabe der SenseBox ID zur Abfrage und Visualisierung: 
+    h5 1. Eingabe der SenseBox ID zur Abfrage:
     p (Beispiele: Senden: 60f077874fb91e001c71b3b1 TestBox: 63c3f0c9a122c30008268cc0)
     input#userInput(style="width: 30%", type='text' placeholder='Sensebox ID')
     p
@@ -14,7 +14,7 @@ block content
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysemap
                 h3 Karte
-                p Karte zur Visualisierung der vom Nutzer verlangten Messtation
+                p Karte zur Visualisierung aller SenseBoxen! Klicken Sie auf eine um ihren Namen und ID herauszufinden
                 br
                 #analysemap
 
@@ -39,6 +39,7 @@ block content
                   input#endtimeInput(style="width: 100%", type='text' placeholder='Endzeit in YYYY-MM-DDThh:mm Beispiel:2022-11-22T10:00')
                   button.btn-dark(style="width: 30%", onclick='fetchbox()') Submit
                   br
+                  p Sollte keine Tabelle mit Datum und Dezibelwert erscheinen, hat die von Ihnen gewählte SenseBox keine Lautstärkedaten!
                   table#resultTable 
                     tr
                       th

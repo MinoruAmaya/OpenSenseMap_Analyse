@@ -1,13 +1,40 @@
-var map = L.map('analysemap').setView([51.919, 7.5], 12);
+var map = L.map('analysemap').setView([51.919, 7.5], 10);
 
 L.tileLayer(
     'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    fetch("https://api.opensensemap.org/boxes?format=geojson").then(function(response) {
+        return response.json();
 
-let lautstärken = []
-let dbwithtime = []
+    }).then(function(locations) {
+        console.log(locations);
+
+        // spezielles Design für die Marker der Messungen
+        var boxstandort = L.icon({
+            iconUrl: 'images/boxmarker.png',
+            iconSize: [30, 30], // size of the icon
+            iconAnchor: [20, 20], // point of the icon which will correspond to marker's location
+            popupAnchor: [-5, -10] // point from which the popup should open relative to the iconAnchor
+        });
+
+        var boxvisualisierung = new L.geoJSON(locations, {
+            pointToLayer: function(feature, latlng) {
+                return L.marker(latlng, {
+                    icon: boxstandort
+                });
+            },
+
+            onEachFeature: function(feature, layer) {
+                layer.bindPopup("Sensebox Name: " + feature.properties.name + "<br>" + "SenseBox ID: " + feature.properties._id)
+
+            }
+        }).addTo(map);
+    }).catch(function(err) {
+        console.log('Fetch Error :', err);
+    })
+
 
 function fetchbox() {
     let SBID = document.getElementById("userInput").value;
@@ -40,13 +67,6 @@ function fetchbox() {
             }
         }).addTo(map);
 
-        var baseLayer = {
-            map
-        };
-        var overlays = {
-            boxvisualisierung
-        };
-
 
     }).catch(function(err) {
         console.log('Fetch Error :', err);
@@ -65,7 +85,6 @@ function fetchbox() {
         }).then(function(dbdata) {
             console.log(dbdata);
 
-            //document.getElementById("elements").innerHTML = JSON.stringify(lautstärken);
             clearTable("resultTable")
             drawTable(dbdata)
                 /**
@@ -99,10 +118,9 @@ function fetchbox() {
                 }
             }
 
-            // Filter die letzten x Einträge heraus
+            // deletes the content of the given array
             for (let i = 0; i < dbdata.length; i++) {
                 delete dbdata[i]
-                    //lautstärken.push(dbdata[i].createdAt + ": " + dbdata[i].value)
             }
             console.log(dbdata)
 
@@ -126,7 +144,6 @@ function fetchbox() {
             console.log(timedata);
             clearTable("resultTable")
 
-            //document.getElementById("elements").innerHTML = JSON.stringify(dbwithtime);
             drawTable(timedata)
                 /**
                  * @function drawTable
@@ -159,11 +176,9 @@ function fetchbox() {
                 }
             }
 
-            //
+            // deletes the content of the given array
             for (let i = 0; i < timedata.length; i++) {
-
                 delete timedata[i]
-                    //dbwithtime.push(timedata[i].createdAt + ": " + timedata[i].value)
             }
             console.log(timedata)
 

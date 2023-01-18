@@ -5,9 +5,8 @@ block content
     br
     p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und Statistisch Analysieren
     h5 1. Eingabe der SenseBox ID zur Abfrage:
+    input#userinput.form-control(style="width: 30%" type='text' name='userinput' placeholder='Sensebox ID')
     p (Beispiele: Senden: 60f077874fb91e001c71b3b1 TestBox: 63c3f0c9a122c30008268cc0)
-    input#userInput(style="width: 30%", type='text' placeholder='Sensebox ID')
-    p
     button.btn-dark(style="width: 30%", onclick='fetchbox()') Submit
     p 
     .row.justify-content-md-left
@@ -17,11 +16,17 @@ block content
                 p Karte zur Visualisierung aller SenseBoxen! Klicken Sie auf eine um ihren Namen und ID herauszufinden
                 br
                 #analysemap
-
+            br
             .card.text-dark.p-4.border-success.cardplotting
                 h5 Plotting 
+                h6 Bitte geben Sie die erforderlichen Daten ein um eine viuelle Analyse anhand von Plots darzustellen
                 form(method='post', action='/map')
-                      button.btn.btn-dark() Plot anzeigen
+                  .form-group.row
+                    .col-sm-6.mb-3.mb-sm-0
+                      input#sbidinput.form-control(type='text' name='sbidinput' placeholder='Sensebox ID')
+                      input#startInput(style="width: 100%", type='text' name='startInput' placeholder='Startzeit in YYYY-MM-DDThh:mm Beispiel:2022-11-23T08:00')
+                      input#endInput(style="width: 100%", type='text' name='endInput' placeholder='Endzeit in YYYY-MM-DDThh:mm Beispiel:2022-11-22T10:00')
+                      button.btn-dark(style="width: 30%") Submit
                 p Hier werden Plots dargestellt wie diese:
                 p Struktur Plot:
                 img(src= weblink , alt="")
@@ -53,7 +58,7 @@ block content
                   download.button-dark#containerjson
                   br
                   p Herunterladen als CSV Datei:
-                  a.i.fa.fa-download.btn.btndownload.btn-dark(role='button', href='https://api.opensensemap.org/boxes/60f077874fb91e001c71b3b1/data/60f077874fb91e001c71b3b2?download=true&format=csv')
+                  button.btn-dark(role='button', href='https://api.opensensemap.org/boxes/60f077874fb91e001c71b3b1/data/60f077874fb91e001c71b3b2?download=true&format=csv') Herunterladen
                     
                 
     script.

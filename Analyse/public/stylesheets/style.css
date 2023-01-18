@@ -3,9 +3,23 @@ body {
   text-align: justify;
 }
 
-.btn {
-  height: 30px;
-  width: 30%;
+#FehlerDiv{
+  text-align: center;
+  color: red;
+  display: none;
+}
+#FehlerDiv2{
+  text-align: center;
+  color: red;
+  display: none;
+}
+#FehlerDiv3{
+  text-align: center;
+  color: red;
+  display: none;
+}
+.allign-middle{
+  text-align: center;
 }
 
 #analysemap {

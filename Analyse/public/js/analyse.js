@@ -37,7 +37,8 @@ L.tileLayer(
 
 
 function fetchbox() {
-    let SBID = document.getElementById("userInput").value;
+    $("#sbidinput").val($("#userinput").val());
+    let SBID = document.getElementById("userinput").value;
     console.log(SBID)
     fetch(`https://api.opensensemap.org/boxes/${SBID}?format=geojson`).then(function(response) {
         return response.json();
@@ -136,6 +137,8 @@ function fetchbox() {
 
         });
     } else {
+        $("#startInput").val($("#starttimeInput").val());
+        $("#endInput").val($("#endtimeInput").val());
         //function fetchboxtime() {
         //https://api.opensensemap.org/boxes/data?boxId=60f077874fb91e001c71b3b1&from-date=2022-11-22T08:00:00Z&to-date=2022-11-22T12:00:00Z&phenomenon=Lautst%C3%A4rke&format=json
         fetch(`https://api.opensensemap.org/boxes/data?boxId=${SBID}&from-date=${starttime}:00Z&to-date=${endtime}:00Z&phenomenon=Lautst%C3%A4rke&format=json`).then(function(response) {

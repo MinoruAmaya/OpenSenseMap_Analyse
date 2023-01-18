@@ -10,7 +10,14 @@ var SBID = document.getElementById("userInput").value;
 */
 
 /* GET users listing. */
-router.get("/", function (req, res, next) {
+router.get("/", function(req, res, next) {
+
+    res.render("map", {
+        title: "Karte"
+    });
+});
+
+router.post("/", function(req, res, next) {
 
     res.render("map", {
         title: "Karte",

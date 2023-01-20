@@ -54,7 +54,7 @@ body {
 
 /* For mobile phones: */
 [class*="col-"] {
-    width: 75%;
+    width: 100%;
   }
   
   @media only screen and (min-width: 500px) {

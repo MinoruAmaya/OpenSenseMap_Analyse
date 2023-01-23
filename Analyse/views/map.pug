@@ -60,22 +60,20 @@ block content
                   button.btn-dark(style="width: 30%", onclick='fetchbox()') Bestätigen
                   br
                   p Sollte keine Tabelle mit Datum und Dezibelwert erscheinen, hat die von Ihnen gewählte SenseBox keine Lautstärkedaten!
-                  table#resultTable 
+                  table#resultTable
                     tr
                       th
                         | Datum der Messung:
                       th
                         | Dezibelwert:
 
-                  br
-                  | Herunterladen der Lautstärkedaten:
-                  br
-                  download.button-dark#containerjson
-                  br
-                  p Herunterladen als CSV Datei:
-                  button.btn-dark(role='button', style="width: 30%",href='https://api.opensensemap.org/boxes/60f077874fb91e001c71b3b1/data/60f077874fb91e001c71b3b2?download=true&format=csv') Herunterladen
-                    
-                
+                  
+                  h4 Herunterladen der Lautstärkedaten:
+                  download#containercsv
+                  download#containerjson
+                  
+
+
     script.
         // Set active Button
         document.querySelectorAll(".active")[0].classList.remove("active");

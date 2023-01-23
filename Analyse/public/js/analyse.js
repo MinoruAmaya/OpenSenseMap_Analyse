@@ -5,49 +5,52 @@ L.tileLayer(
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    fetch("https://api.opensensemap.org/boxes?format=geojson").then(function(response) {
-        return response.json();
+// abrufen aller openSenseBoxen und hinzufügen zur Leaflet Karte
+fetch("https://api.opensensemap.org/boxes?format=geojson").then(function (response) {
+    return response.json();
+}).then(function (locations) {
+    console.log(locations);
 
-    }).then(function(locations) {
-        console.log(locations);
+    // spezielles Design für die Marker der Messungen
+    var boxstandort = L.icon({
+        iconUrl: 'images/boxmarker.png',
+        iconSize: [30, 30], // size of the icon
+        iconAnchor: [20, 20], // point of the icon which will correspond to marker's location
+        popupAnchor: [-5, -10] // point from which the popup should open relative to the iconAnchor
+    });
 
-        // spezielles Design für die Marker der Messungen
-        var boxstandort = L.icon({
-            iconUrl: 'images/boxmarker.png',
-            iconSize: [30, 30], // size of the icon
-            iconAnchor: [20, 20], // point of the icon which will correspond to marker's location
-            popupAnchor: [-5, -10] // point from which the popup should open relative to the iconAnchor
-        });
+    var boxvisualisierung = new L.geoJSON(locations, {
+        pointToLayer: function (feature, latlng) {
+            return L.marker(latlng, {
+                icon: boxstandort
+            });
+        },
 
-        var boxvisualisierung = new L.geoJSON(locations, {
-            pointToLayer: function(feature, latlng) {
-                return L.marker(latlng, {
-                    icon: boxstandort
-                });
-            },
+        onEachFeature: function (feature, layer) {
+            layer.bindPopup("Sensebox Name: " + feature.properties.name + "<br>" + "SenseBox ID: " + feature.properties._id)
 
-            onEachFeature: function(feature, layer) {
-                layer.bindPopup("Sensebox Name: " + feature.properties.name + "<br>" + "SenseBox ID: " + feature.properties._id)
+        }
+    }).addTo(map);
+}).catch(function (err) {
+    console.log('Fetch Error :', err);
+})
 
-            }
-        }).addTo(map);
-    }).catch(function(err) {
-        console.log('Fetch Error :', err);
-    })
-
-
+/**
+ * @function fetchbox
+ * @desc fetches data with the given user input as wildcards
+ * @param {*} 
+ */
 function fetchbox() {
-    $("#sbidinput").val($("#userinput").val());
     let SBID = document.getElementById("userinput").value;
     console.log(SBID)
-    fetch(`https://api.opensensemap.org/boxes/${SBID}?format=geojson`).then(function(response) {
+    fetch(`https://api.opensensemap.org/boxes/${SBID}?format=geojson`).then(function (response) {
         return response.json();
         console.log(SBID)
-    }).then(function(data) {
+    }).then(function (data) {
         console.log(data);
         console.log(JSON.stringify(data));
 
-        // spezielles Design für die Marker der Messungen
+        // spezielles Design für die Marker der Boxstandorte
         var boxstandort = L.icon({
             iconUrl: 'images/boxmarker.png',
             iconSize: [30, 30], // size of the icon
@@ -56,20 +59,20 @@ function fetchbox() {
         });
 
         var boxvisualisierung = new L.geoJSON(data, {
-            pointToLayer: function(feature, latlng) {
+            pointToLayer: function (feature, latlng) {
                 return L.marker(latlng, {
                     icon: boxstandort
                 });
             },
 
-            onEachFeature: function(feature, layer) {
+            onEachFeature: function (feature, layer) {
                 layer.bindPopup("Sensebox Name: " + feature.properties.name + "<br>" + "SenseBox ID: " + feature.properties._id)
 
             }
         }).addTo(map);
 
 
-    }).catch(function(err) {
+    }).catch(function (err) {
         console.log('Fetch Error :', err);
     })
 
@@ -79,20 +82,20 @@ function fetchbox() {
     let starttime = document.getElementById("starttimeInput").value;
     let endtime = document.getElementById("endtimeInput").value;
     console.log(SBID)
-    if (starttime == 0) {
+    if (starttime == 0 || endtime == 0) {
         ////https://api.opensensemap.org/boxes/data?boxId=60f077874fb91e001c71b3b1&phenomenon=Lautst%C3%A4rke&format=json
-        fetch(`https://api.opensensemap.org/boxes/data?boxId=${SBID}&phenomenon=Lautst%C3%A4rke&format=json`).then(function(response) {
+        fetch(`https://api.opensensemap.org/boxes/data?boxId=${SBID}&phenomenon=Lautst%C3%A4rke&format=json`).then(function (response) {
             return response.json();
-        }).then(function(dbdata) {
+        }).then(function (dbdata) {
             console.log(dbdata);
 
             clearTable("resultTable")
             drawTable(dbdata)
-                /**
-                 * @function drawTable
-                 * @desc inserts the fetched data into the table thats displayed on the page
-                 * @param {*} results array of JSON wich containes the data to be displayed
-                 */
+            /**
+             * @function drawTable
+             * @desc inserts the fetched data into the table thats displayed on the page
+             * @param {*} results array of JSON wich containes the data to be displayed
+             */
             function drawTable(results) {
                 var table = document.getElementById("resultTable");
                 //creates the Table with the direction an distances
@@ -119,40 +122,51 @@ function fetchbox() {
                 }
             }
 
-            // deletes the content of the given array
+            // herunterladen als CSV Datei über DOM
+            var csv = dbdata.map(row => Object.values(row).join(",")).join("\n");
+            var filename = "Lautstärkedaten.csv";
+            var blob = new Blob([csv], {
+                type: "text/csv"
+            });
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.innerHTML = "Herunterladen als CSV Datei<br>"
+            var containercsv = document.getElementById('containercsv');
+            containercsv.appendChild(link);
+
+
+            // herunterladen als json Datei über DOM
+            var boxinfos = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbdata));
+            var a = document.createElement('a');
+            a.href = boxinfos;
+            a.download = 'Lautstärkedaten.json';
+            a.innerHTML = "Herunterladen als JSON Datei <br>"
+            var containerjson = document.getElementById('containerjson');
+            containerjson.appendChild(a);
+
+
+            // löscht den Array, damit bei einer erneuten Abfrage nur die neue Abfrage im Array ist
             for (let i = 0; i < dbdata.length; i++) {
                 delete dbdata[i]
             }
             console.log(dbdata)
 
-            // export as json
-            var boxinfos = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbdata));
-            var a = document.createElement('a');
-            a.href = boxinfos;
-            a.download = 'boxinfos.json';
-            a.innerHTML = "Herunterladen als JSON <br>"
-
-            var containerjson = document.getElementById('containerjson');
-            containerjson.appendChild(a);
-
         });
     } else {
-        $("#startInput").val($("#starttimeInput").val());
-        $("#endInput").val($("#endtimeInput").val());
-        //function fetchboxtime() {
-        //https://api.opensensemap.org/boxes/data?boxId=60f077874fb91e001c71b3b1&from-date=2022-11-22T08:00:00Z&to-date=2022-11-22T12:00:00Z&phenomenon=Lautst%C3%A4rke&format=json
-        fetch(`https://api.opensensemap.org/boxes/data?boxId=${SBID}&from-date=${starttime}:00Z&to-date=${endtime}:00Z&phenomenon=Lautst%C3%A4rke&format=json`).then(function(response) {
+        // Wenn Start und Endzeit angegeben wurde werden diese in der Anfrage an die opensensemap API berücksichtigt
+        fetch(`https://api.opensensemap.org/boxes/data?boxId=${SBID}&from-date=${starttime}:00Z&to-date=${endtime}:00Z&phenomenon=Lautst%C3%A4rke&format=json`).then(function (response) {
             return response.json();
-        }).then(function(timedata) {
+        }).then(function (timedata) {
             console.log(timedata);
             clearTable("resultTable")
 
             drawTable(timedata)
-                /**
-                 * @function drawTable
-                 * @desc inserts the fetched data into the table thats displayed on the page
-                 * @param {*} results array of JSON wich containes the data to be displayed
-                 */
+            /**
+             * @function drawTable
+             * @desc inserts the fetched data into the table thats displayed on the page;
+             * @param {*} results array of JSON wich containes the data to be displayed
+             */
             function drawTable(results) {
                 var table = document.getElementById("resultTable");
                 //creates the Table with the direction an distances
@@ -179,20 +193,33 @@ function fetchbox() {
                 }
             }
 
+            // herunterladen als CSV Datei über DOM
+            var csv = dbdata.map(row => Object.values(row).join(",")).join("\n");
+            var filename = "Lautstärkedaten.csv";
+            var blob = new Blob([csv], {
+                type: "text/csv"
+            });
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.innerHTML = "Herunterladen als CSV Datei<br>"
+            var containercsv = document.getElementById('containercsv');
+            containercsv.appendChild(link);
+
+            // herunterladen als JSON Datei über DOM
+            var boxinfos = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(timedata));
+            var a = document.createElement('a');
+            a.href = boxinfos;
+            a.download = 'Lautstärkedaten.json';
+            a.innerHTML = "Herunterladen als JSON <br>"
+            var containerjson = document.getElementById('containerjson');
+            containerjson.appendChild(a);
+
             // deletes the content of the given array
             for (let i = 0; i < timedata.length; i++) {
                 delete timedata[i]
             }
             console.log(timedata)
-
-            // export as json
-            var boxinfos = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(timedata));
-            var a = document.createElement('a');
-            a.href = boxinfos;
-            a.download = 'boxinfos.json';
-            a.innerHTML = "Herunterladen als JSON <br>"
-            var containerjson = document.getElementById('containerjson');
-            containerjson.appendChild(a);
         });
         //}
     }

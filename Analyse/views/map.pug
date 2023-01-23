@@ -3,12 +3,12 @@ extends layout
 block content
     h2 Analyse Seite
     br
-    p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und Statistisch Analysieren
+    p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und Statistisch analysieren.
     .row
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysemap
                 h3 1. Karte
-                p Karte zur Visualisierung aller SenseBoxen! Klicken Sie auf einen Marker auf der Karte um den Namen und die für die Abfrage benötigte SenseBox ID herauszufinden!
+                p Karte zur Visualisierung aller SenseBoxen! Klicken Sie auf einen Marker auf der Karte, um den Namen und die für die Abfrage benötigte SenseBox ID herauszufinden!
                 br
                 #analysemap
             br
@@ -16,7 +16,7 @@ block content
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardplotting
                 h5 2. Plotting 
-                h6 Bitte geben Sie die erforderlichen Daten ein um eine viuelle Analyse anhand von Plots darzustellen
+                h6 Bitte geben Sie die erforderlichen Daten ein, um eine visuelle Analyse anhand von Plots darzustellen.
                 form(method='post', action='/map')
                   .form-group.row
                     .col-sm-6.mb-3.mb-sm-0
@@ -29,11 +29,11 @@ block content
                       input#endInput(style="width: 100%", type='text' name='endInput' placeholder='Endzeit in YYYY-MM-DDThh:mm')
                       button.btn-dark(style="width: 30%") Bestätigen
                 h5 Struktur Plot:
-                img(src= weblink , alt="")
+                img(src= weblink,style="height: 50%; width: 50%", alt="")
     .row
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysen
-                  h5 3. Anzeige aller gemessenen Werte eines nachgefragten Messstandorts mit Datum und Uhrzeit
+                  h5 3. Anzeige aller gemessenen Werte eines nachgefragten Messstandorts mit Datum und Uhrzeit.
                   h6 3.1 Eingabe der SenseBox ID zur Abfrage der letzten gemessenen Werte: (Beispiele: <br> Senden: 60f077874fb91e001c71b3b1 <br> TestBox: 63c3f0c9a122c30008268cc0)
                   input#userinput.form-control(style="width: 55%" type='text' name='userinput' placeholder='Sensebox ID')
                   

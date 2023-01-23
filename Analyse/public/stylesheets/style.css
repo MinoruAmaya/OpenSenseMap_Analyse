@@ -29,18 +29,17 @@ body {
 
 .cardanalysemap {
   height: 750px;
-  width: 120%;
+  width: 200%;
 }
 
 .cardanalysen{
   height: 100%;
-  width: 75%;
-  margin-left: auto;
+  width: 200%;
 }
 
 .cardplotting {
   height: 1150px;
-  width: 120%;
+  width: 200%;
 }
 
 .cardimages {

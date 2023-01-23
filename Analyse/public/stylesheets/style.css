@@ -55,10 +55,37 @@ body {
 }
 
 
-  /* For mobile phones: */
-  [class*="col-"] {
-    width: 100%;
+    /* Mobile Layout Styles */
+@media only screen and (max-width: 768px) {
+  /* Header Styles */
+  header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px;
   }
+  /* Main Content Styles */
+  main {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 10px;
+  }
+  /* Sidebar Styles */
+  aside {
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+  }
+  /* Article Styles */
+  article {
+      width: 100%;
+      padding: 10px;
+  }
+  /* Navbar Styles */
+  nav {
+      display: none;
+  }
+}
 
   
   @media only screen and (min-width: 500px) {

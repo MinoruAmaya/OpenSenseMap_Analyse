@@ -49,13 +49,13 @@ structurePlot <- function(boxID, from, to, Day, Night, MA, Mean){
   Messungen$createdAt <- as.POSIXct(Messungen$createdAt,format="%Y-%m-%dT%H:%M:%S",tz=Sys.timezone())
   Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))
   #counter <- 1
-  colors <- c("Scatter Plot" = "darkgreen", "Mittelwert" = "darkblue", "Moving Average" = "yellow")
+  colors <- c("Lautstärkedaten" = "darkgreen", "Mittelwert" = "darkblue", "Moving Average" = "yellow")
   
   if(Day == TRUE){
     if(Night == TRUE){
       
       print("Kompletter Tag!")
-      Ausgabe <- Ausgabe + geom_point(aes(col = "Scatter Plot"), size=0.5)
+      Ausgabe <- Ausgabe + geom_point(aes(col = "Lautstärkedaten"), size=0.5)
       #counter <- counter + 1
       
     } else {
@@ -63,7 +63,7 @@ structurePlot <- function(boxID, from, to, Day, Night, MA, Mean){
       print("Nur Tagsüber!")
       Messungen <- dayPlot(Messungen)
       Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))
-      Ausgabe <- Ausgabe + geom_point(aes(col = "Scatter Plot"), size=0.5)
+      Ausgabe <- Ausgabe + geom_point(aes(col = "Lautstärkedaten"), size=0.5)
       #counter <- counter + 1
       
     }
@@ -73,7 +73,7 @@ structurePlot <- function(boxID, from, to, Day, Night, MA, Mean){
       print("Nur Nachts!")
       Messungen <- nightPlot(Messungen)
       Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))
-      Ausgabe <- Ausgabe + geom_point(aes(col = "Scatter Plot"), size=0.5)
+      Ausgabe <- Ausgabe + geom_point(aes(col = "Lautstärkedaten"), size=0.5)
       #counter <- counter + 1
       
     } else {

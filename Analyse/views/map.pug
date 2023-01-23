@@ -27,8 +27,23 @@ block content
                       input#startInput(style="width: 100%", type='text' name='startInput' placeholder='Startzeit in YYYY-MM-DDThh:mm')
                       h6 2.2.2 Endzeit: (Beispiel: 2022-11-22T12:00)
                       input#endInput(style="width: 100%", type='text' name='endInput' placeholder='Endzeit in YYYY-MM-DDThh:mm')
+                      
+                      h6 2.2.3 Wählen Sie aus, welche zusätzlichen Analysemethoden auf dem Plot angezeigt werden sollen:
+                        p Mittelwert: Durschnitt:
+                          .form-check.form-check-inline.form-switch
+                            input#mittel(type='checkbox' class="form-check-input" name="mittel") 
+                          .form-check.form-check-inline.form-switch
+                            input#durch(type='checkbox' class="form-check-input" name="durch")
+
+                      h6 2.2.4 Wählen Sie aus, welche Tageszeiten auf dem Plot angezeigt werden sollen:
+                        p Tag: &nbsp &nbsp &nbsp &nbsp Nacht:
+                          .form-check.form-check-inline.form-switch
+                            input#tag(type='checkbox' class="form-check-input" name="tag") 
+                          .form-check.form-check-inline.form-switch
+                            input#nacht(type='checkbox' class="form-check-input" name="nacht")
+
                       button.btn-dark(style="width: 30%") Bestätigen
-                h5 Struktur Plot:
+                br
                 img(src= weblink,style="height: 50%; width: 50%", alt="")
     .row
         .col-lg-6.col-xs-12.mb-3

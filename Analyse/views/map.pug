@@ -44,7 +44,11 @@ block content
 
                       button.btn-dark(style="width: 30%") Bestätigen
                 br
-                img(src= weblink,style="height: 50%; width: 50%", alt="")
+                .d-flex.align-items-center.justify-content-center#loading-element
+                  .spinner-border.text-primary
+                  | 
+                img(src=weblink, style="height: 50%; width: 80%", alt="", onload="hideLoadingElement()")
+                p Falls kein Plot angezeigt wird, der Ladekreis aber verschwunden ist war Ihre Eingabe ungültig! Bei einem leeren Plot sind in der Vorhandenen Zeitspanne keine gemessenen Daten vorhanden!
     .row
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysen

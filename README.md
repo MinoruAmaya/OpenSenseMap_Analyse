@@ -1,7 +1,7 @@
 # SUGUCS
 Dies ist das Repo für das Citizen Science Project "Umweltbezogener Gesundheitsschutz und Citizen Science".
 
-Wilkommen zum Citizen Science Projekt Namb - Noise above my Boundaries!
+Wilkommen zum Citicen Science Projekt Namb - Noise above my Boundaries!
 Hier sind Sie genau richtig wenn Sie mehr über Lärmverschmutzung im Zusammenhang mit Gesundheitsschutz in Münster lernen wollen oder dabei helfen wollen, Lärmmessungen vorzunehmen, um die Datengrundlage zu verbessern.
 
 Die App bietet Ihnen umfangreiche Tools zum Einsehen und Einmessung von Lärmdaten im Stadtbereich Münsters.
@@ -16,8 +16,9 @@ Haben Sie Ihr Gerät fertig kalibriert und wollen die Messung starten, so nutzen
 Bei der Messfunktion haben Sie die Möglichkeit eine eigene Messung zu erstellen und Ihre Kalibrierung auf diese Messung automatisch anzuwenden.
 Dazu brauchen Sie nur ihre User ID von der Kalibrierung, sowie eine Sense Box ID und den passenden Token, um anschließend Ihre kalibrierte Messung auf Open Sense Map bereistellen zu können.
 
-Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen wollen, so nutzen Sie bitte den Reiter "Open Sense Map".  
-***** Hier Text OpenSenseMap *****  
+Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen wollen, so nutzen Sie bitte den Reiter "Analyse".  
+
+Bei der Analyse können Sie Lautstärkedaten, welche über die openSenseMap zur verfügung gestellt werden grafisch als Diagramme darstellen sowie diese in tabellarischer Form mit Datum und Uhrzeit anzeigen lassen und als CSV und JSON herunterladen.
 
 # Lizenz
 
